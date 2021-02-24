@@ -6,6 +6,14 @@ const caesarModule = (function () {
     return (asciiCode >= BEGIN_LOWER) && (asciiCode < BEGIN_LOWER + EN_LETTERS);
   }
 
+  /**
+   * 
+   * @param {number} asciiCode 
+   * @param {number} shiftBy 
+   * Returns the character associated with the shift away from the current
+   * letter. If the input ASCII code does not correspond to an English letter,
+   * the character (e.g. "!") corresponding to it is returned
+   */
   function processShift(asciiCode, shiftBy) {
     if(!isLowerAlpha(asciiCode)) return String.fromCharCode(asciiCode);
 
@@ -17,6 +25,15 @@ const caesarModule = (function () {
     return String.fromCharCode(BEGIN_LOWER + finalOffset);
   }
 
+  /**
+   * 
+   * @param {string} input 
+   * @param {number} shift 
+   * @param {boolean} encode Set to false when "decoding"
+   * Shifts (or unshifts) all Roman letters by the specified shift amount
+   * within the alphabet, wrapping around when encountering either end of the
+   * alphabet (e.g. from c --> v or x --> f)
+   */
   function caesar(input, shift, encode = true) {
     // shift == 0 or shift is null / undefined
     if(!shift || Math.abs(shift) >= EN_LETTERS) return false;

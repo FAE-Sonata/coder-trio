@@ -10,6 +10,8 @@ const substitutionModule = (function () {
    * 
    * @param {string} standard character using standard Latin encoding
    * @param {string} alphabet the same alphabet that was passed into substitution()
+   * Converts the standard alphabet letter to the corresponding character in
+   * the destination encoder alphabet
    */
   function convertChar(standard, alphabet)  {
     const asciiCode = standard.charCodeAt(0);
@@ -21,6 +23,7 @@ const substitutionModule = (function () {
    * 
    * @param {string} s character using the encoding provided by alphabet
    * @param {string} alphabet the same alphabet that was passed into substitution()
+   * The inverse of convertChar()
    */
   function decode(s, alphabet)  {
     const idx = alphabet.lastIndexOf(s);
@@ -28,10 +31,19 @@ const substitutionModule = (function () {
     else return String.fromCharCode(BEGIN_LOWER + idx);
   }
 
+  /**
+   * 
+   * @param {string} input 
+   * @param {string} alphabet Reference "alphabet" different from the standard
+   * English alphabet. Must have 26 unique characters
+   * @param {boolean} encode Set to false when "decoding"
+   * Uses the provided modified "alphabet" to encode or decode the input string
+   */
   function substitution(input, alphabet, encode = true) {
     /** check malformed alphabet **/
-    // spaces preserved during encoding / decoding, so should be ignored in alphabet
+    // if "alphabet" was skipped and only "input" and "encode" are provided
     if(alphabet === null || typeof(alphabet) != "string") return false;
+    // spaces preserved during encoding / decoding, so should be ignored in alphabet
     const noSpaces = alphabet.replace(/\s/, "");
     let uniqueChars = [...new Set(noSpaces)];
     if(noSpaces.length != EN_LETTERS || uniqueChars.length != EN_LETTERS)
